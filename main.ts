@@ -8,18 +8,10 @@ import {
   SectionCache,
   TFile,
   moment,
-  PluginSettingTab,
-  Setting,
-  App,
 } from "obsidian";
 
-interface MyPluginSettings {
-  dateFormat: string;
-}
-
-const DEFAULT_SETTINGS: MyPluginSettings = {
-  dateFormat: 'YYYY-MM-DDTHH-mm-ss',
-};
+import { DEFAULT_SETTINGS, MyPluginSettings } from "./settings";
+import { MyPluginSettingTab } from "./settingsTab";
 
 const illegalHeadingCharsRegex = /[!"#$%&()*+,.:;<=>?@^`{|}~\/\[\]\\]/g;
 function sanitizeHeading(heading: string) {
@@ -45,6 +37,7 @@ export default class MyPlugin extends Plugin {
   settings: MyPluginSettings;
 
   async onload() {
+    console.log("loading Block Time Linker");
     await this.loadSettings();
 
     this.addSettingTab(new MyPluginSettingTab(this.app, this));
@@ -86,6 +79,8 @@ export default class MyPlugin extends Plugin {
       })
     );
 
+    // Add commands
+
     this.addCommand({
       id: "copy-link-to-block",
       name: "Copy link to current block or heading",
@@ -101,14 +96,6 @@ export default class MyPlugin extends Plugin {
         return this.handleCommand(isChecking, editor, view, true);
       },
     });
-  }
-
-  async loadSettings() {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-  }
-
-  async saveSettings() {
-    await this.saveData(this.settings);
   }
 
   generateId(): string {
@@ -220,30 +207,17 @@ export default class MyPlugin extends Plugin {
       )}`
     );
   }
-}
 
-class MyPluginSettingTab extends PluginSettingTab {
-  plugin: MyPlugin;
-
-  constructor(app: App, plugin: MyPlugin) {
-    super(app, plugin);
-    this.plugin = plugin;
+  onunload(): void {
+      console.log("unloading Block Time Linker");
   }
 
-  display(): void {
-    let { containerEl } = this;
-
-    containerEl.empty();
-
-    new Setting(containerEl)
-      .setName('Date format')
-      .setDesc('Format for the block ID date (using moment.js format)')
-      .addText(text => text
-        .setPlaceholder('YYYY-MM-DDTHH-mm-ss')
-        .setValue(this.plugin.settings.dateFormat)
-        .onChange(async (value) => {
-          this.plugin.settings.dateFormat = value;
-          await this.plugin.saveSettings();
-        }));
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
   }
+
+  async saveSettings() {
+    await this.saveData(this.settings);
+  }
+
 }
