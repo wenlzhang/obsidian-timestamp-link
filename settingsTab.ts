@@ -29,10 +29,22 @@ export class MyPluginSettingTab extends PluginSettingTab {
       .setDesc('MomentJS format, e.g., YYYYMMDDHHmmss)')
       .addText(text => text
         .setPlaceholder('YYYY-MM-DDTHH-mm-ss')
-        .setValue(this.plugin.settings.dateFormat)
+        .setValue(this.plugin.settings.blockIDDateFormat)
         .onChange(async (value) => {
-          this.plugin.settings.dateFormat = value;
+          this.plugin.settings.blockIDDateFormat = value;
           await this.plugin.saveSettings();
         }));
+    
+    new Setting(this.containerEl)
+    .setName('Append text format')
+    .setDesc('Text to be appended after the copied note link. MomentJS format, e.g., [📝 ]YYYY-MM-DDTHH:mm)')
+    .addText(text => text
+      .setPlaceholder('YYYY-MM-DDTHH-mm-ss')
+      .setValue(this.plugin.settings.appendTextDateFormat)
+      .onChange(async (value) => {
+        this.plugin.settings.appendTextDateFormat = value;
+        await this.plugin.saveSettings();
+      }));
+  
   }
 }

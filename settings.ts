@@ -1,7 +1,9 @@
 export interface MyPluginSettings {
-  dateFormat: string;
+  blockIDDateFormat: string;
+  appendTextDateFormat: string;
 }
 
 export const DEFAULT_SETTINGS: MyPluginSettings = {
-  dateFormat: 'YYYY-MM-DDTHH-mm-ss',
+  blockIDDateFormat: 'YYYY-MM-DDTHH-mm-ss',
+  appendTextDateFormat: '[📝 ]YYYY-MM-DDTHH:mm',
 };

@@ -96,10 +96,19 @@ export default class MyPlugin extends Plugin {
         return this.handleCommand(isChecking, editor, view, true);
       },
     });
+
+    this.addCommand({
+      id: "copy-link-to-block-append-text",
+      name: "Copy link to current block or heading with appended text",
+      editorCheckCallback: (isChecking, editor, view) => {
+        return this.handleCommandAppend(isChecking, editor, view, false);
+      },
+    });
+
   }
 
   generateId(): string {
-    return moment().format(this.settings.dateFormat);
+    return moment().format(this.settings.blockIDDateFormat);
   }
 
   handleCommand(
@@ -122,6 +131,34 @@ export default class MyPlugin extends Plugin {
       this.handleHeading(view.file, block as HeadingCache, isEmbed);
     } else {
       this.handleBlock(
+        view.file,
+        editor,
+        block as SectionCache | ListItemCache,
+        isEmbed
+      );
+    }
+  }
+
+  handleCommandAppend(
+    isChecking: boolean,
+    editor: Editor,
+    view: MarkdownView,
+    isEmbed: boolean
+  ) {
+    if (isChecking) {
+      return !!this.getBlock(editor, view.file);
+    }
+
+    const block = this.getBlock(editor, view.file);
+
+    if (!block) return;
+
+    const isHeading = !!(block as any).heading;
+
+    if (isHeading) {
+      this.handleHeadingAppend(view.file, block as HeadingCache, isEmbed);
+    } else {
+      this.handleBlockAppend(
         view.file,
         editor,
         block as SectionCache | ListItemCache,
@@ -169,6 +206,19 @@ export default class MyPlugin extends Plugin {
     );
   }
 
+  handleHeadingAppend(file: TFile, block: HeadingCache, isEmbed: boolean) {
+    const link = this.app.fileManager.generateMarkdownLink(
+      file,
+      "",
+      "#" + sanitizeHeading(block.heading)
+    );
+    const appendText = `${moment().format(this.settings.appendTextDateFormat)}`;
+
+    navigator.clipboard.writeText(
+      `${isEmbed ? "!" : ""}${link} ${appendText}`
+    );
+  }
+
   handleBlock(
     file: TFile,
     editor: Editor,
@@ -205,6 +255,49 @@ export default class MyPlugin extends Plugin {
         "",
         "#^" + id
       )}`
+    );
+  }
+
+  handleBlockAppend(
+    file: TFile,
+    editor: Editor,
+    block: ListItemCache | SectionCache,
+    isEmbed: boolean
+  ) {
+    const blockId = block.id;
+
+    // Copy existing block id
+    if (blockId) {
+      const link = this.app.fileManager.generateMarkdownLink(
+        file,
+        "",
+        "#^" + blockId
+      )
+      const appendText = `${moment().format(this.settings.appendTextDateFormat)}`;
+      return navigator.clipboard.writeText(
+        `${isEmbed ? "!" : ""}${link} ${appendText}`
+      );
+    }
+
+    // Add a block id
+    const sectionEnd = block.position.end;
+    const end: EditorPosition = {
+      ch: sectionEnd.col,
+      line: sectionEnd.line,
+    };
+
+    const id = this.generateId();
+    const spacer = shouldInsertAfter(block) ? "\n\n" : " ";
+
+    editor.replaceRange(`${spacer}^${id}`, end);
+    const linkAdd = this.app.fileManager.generateMarkdownLink(
+      file,
+      "",
+      "#^" + id
+    )
+    const appendTextAdd = `${moment().format(this.settings.appendTextDateFormat)}`;
+    navigator.clipboard.writeText(
+      `${isEmbed ? "!" : ""}${linkAdd} ${appendTextAdd}`
     );
   }
 
