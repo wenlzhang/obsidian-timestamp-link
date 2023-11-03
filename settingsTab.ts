@@ -18,13 +18,15 @@ export class MyPluginSettingTab extends PluginSettingTab {
   }
 
   display(): void {
-    let { containerEl } = this;
+    this.containerEl.empty();
 
-    containerEl.empty();
+    this.containerEl.createEl("h3", {
+        text: "Please try reopening the vault or restarting Obsidian if the following setting changes do not take effect.",
+    });
 
-    new Setting(containerEl)
-      .setName('Date format')
-      .setDesc('Format for the block ID date (using moment.js format)')
+    new Setting(this.containerEl)
+      .setName('Block ID format')
+      .setDesc('MomentJS format, e.g., YYYYMMDDHHmmss)')
       .addText(text => text
         .setPlaceholder('YYYY-MM-DDTHH-mm-ss')
         .setValue(this.plugin.settings.dateFormat)
