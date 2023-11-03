@@ -1,10 +1,13 @@
 {
-	"id": "obsidian-copy-block-link",
-	"name": "Copy Block Link",
-	"version": "1.0.4",
-	"minAppVersion": "0.12.12",
-	"description": "Get links to blocks and headings from Obsidian's right click menu",
-	"author": "mgmeyers",
-	"authorUrl": "https://github.com/mgmeyers/obsidian-copy-block-link",
+	"id": "obsidian-block-time-linker",
+	"name": "Block Time Linker",
+	"version": "0.0.1",
+	"minAppVersion": "1.0.0",
+	"description": "Copy timestamped links to blocks, headings and notes.",
+	"author": "wenlzhang",
+	"authorUrl": "https://github.com/wenlzhang",
+	"fundingUrl": {
+        "Buy Me a Coffee": "https://ko-fi.com/f84556"
+    },
 	"isDesktopOnly": false
 }
