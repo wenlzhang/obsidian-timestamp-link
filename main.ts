@@ -8,11 +8,18 @@ import {
   SectionCache,
   TFile,
   moment,
+  PluginSettingTab,
+  Setting,
+  App,
 } from "obsidian";
 
-function generateId(): string {
-  return moment().format('YYYY-MM-DDTHH-mm-ss');
+interface MyPluginSettings {
+  dateFormat: string;
 }
+
+const DEFAULT_SETTINGS: MyPluginSettings = {
+  dateFormat: 'YYYY-MM-DDTHH-mm-ss',
+};
 
 const illegalHeadingCharsRegex = /[!"#$%&()*+,.:;<=>?@^`{|}~\/\[\]\\]/g;
 function sanitizeHeading(heading: string) {
@@ -35,7 +42,13 @@ function shouldInsertAfter(block: ListItemCache | SectionCache) {
 }
 
 export default class MyPlugin extends Plugin {
+  settings: MyPluginSettings;
+
   async onload() {
+    await this.loadSettings();
+
+    this.addSettingTab(new MyPluginSettingTab(this.app, this));
+
     this.registerEvent(
       this.app.workspace.on("editor-menu", (menu, editor, view) => {
         const block = this.getBlock(editor, view.file);
@@ -88,6 +101,18 @@ export default class MyPlugin extends Plugin {
         return this.handleCommand(isChecking, editor, view, true);
       },
     });
+  }
+
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+  }
+
+  async saveSettings() {
+    await this.saveData(this.settings);
+  }
+
+  generateId(): string {
+    return moment().format(this.settings.dateFormat);
   }
 
   handleCommand(
@@ -183,7 +208,7 @@ export default class MyPlugin extends Plugin {
       line: sectionEnd.line,
     };
 
-    const id = generateId();
+    const id = this.generateId();
     const spacer = shouldInsertAfter(block) ? "\n\n" : " ";
 
     editor.replaceRange(`${spacer}^${id}`, end);
@@ -194,5 +219,31 @@ export default class MyPlugin extends Plugin {
         "#^" + id
       )}`
     );
+  }
+}
+
+class MyPluginSettingTab extends PluginSettingTab {
+  plugin: MyPlugin;
+
+  constructor(app: App, plugin: MyPlugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+
+  display(): void {
+    let { containerEl } = this;
+
+    containerEl.empty();
+
+    new Setting(containerEl)
+      .setName('Date format')
+      .setDesc('Format for the block ID date (using moment.js format)')
+      .addText(text => text
+        .setPlaceholder('YYYY-MM-DDTHH-mm-ss')
+        .setValue(this.plugin.settings.dateFormat)
+        .onChange(async (value) => {
+          this.plugin.settings.dateFormat = value;
+          await this.plugin.saveSettings();
+        }));
   }
 }
