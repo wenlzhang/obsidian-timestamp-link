@@ -42,66 +42,66 @@ export default class MyPlugin extends Plugin {
 
     this.addSettingTab(new MyPluginSettingTab(this.app, this));
 
-    this.registerEvent(
-      this.app.workspace.on("editor-menu", (menu, editor, view) => {
-        const block = this.getBlock(editor, view.file);
+    // this.registerEvent(
+    //   this.app.workspace.on("editor-menu", (menu, editor, view) => {
+    //     const block = this.getBlock(editor, view.file);
 
-        if (!block) return;
+    //     if (!block) return;
 
-        const isHeading = !!(block as any).heading;
+    //     const isHeading = !!(block as any).heading;
 
-        const onClick = (isEmbed: boolean) => {
-          if (isHeading) {
-            this.handleHeading(view.file, block as HeadingCache, isEmbed);
-          } else {
-            this.handleBlock(
-              view.file,
-              editor,
-              block as SectionCache | ListItemCache,
-              isEmbed
-            );
-          }
-        };
+    //     const onClick = (isEmbed: boolean) => {
+    //       if (isHeading) {
+    //         this.handleHeading(view.file, block as HeadingCache, isEmbed);
+    //       } else {
+    //         this.handleBlock(
+    //           view.file,
+    //           editor,
+    //           block as SectionCache | ListItemCache,
+    //           isEmbed
+    //         );
+    //       }
+    //     };
 
-        menu.addItem((item) => {
-          item
-            .setTitle(isHeading ? "Copy link to heading" : "Copy link to block")
-            .setIcon("links-coming-in")
-            .onClick(() => onClick(false));
-        });
+    //     menu.addItem((item) => {
+    //       item
+    //         .setTitle(isHeading ? "Copy link to heading" : "Copy link to block")
+    //         .setIcon("links-coming-in")
+    //         .onClick(() => onClick(false));
+    //     });
 
-        menu.addItem((item) => {
-          item
-            .setTitle(isHeading ? "Copy heading embed" : "Copy block embed")
-            .setIcon("links-coming-in")
-            .onClick(() => onClick(true));
-        });
-      })
-    );
+    //     menu.addItem((item) => {
+    //       item
+    //         .setTitle(isHeading ? "Copy heading embed" : "Copy block embed")
+    //         .setIcon("links-coming-in")
+    //         .onClick(() => onClick(true));
+    //     });
+    //   })
+    // );
 
     // Add commands
 
     this.addCommand({
-      id: "copy-link-to-block",
-      name: "Copy link to current block or heading",
+      id: "copy-block-heading-link",
+      name: "Copy block/heading link",
       editorCheckCallback: (isChecking, editor, view) => {
         return this.handleCommand(isChecking, editor, view, false);
       },
     });
 
     this.addCommand({
-      id: "copy-embed-to-block",
-      name: "Copy embed to current block or heading",
+      id: "copy-block-heading-link-appending-text",
+      name: "Copy block/heading link appending text",
       editorCheckCallback: (isChecking, editor, view) => {
-        return this.handleCommand(isChecking, editor, view, true);
+        return this.handleCommandAppend(isChecking, editor, view, false);
       },
     });
 
     this.addCommand({
-      id: "copy-link-to-block-append-text",
-      name: "Copy link to current block or heading with appended text",
+      id: "copy-block-heading-embed",
+      name: "Copy block/heading embed",
       editorCheckCallback: (isChecking, editor, view) => {
-        return this.handleCommandAppend(isChecking, editor, view, false);
+        return this.handleCommand(isChecking, editor, view, true);
       },
     });
 
