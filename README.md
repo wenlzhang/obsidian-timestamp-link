@@ -8,6 +8,14 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
 
 
 
+## Notes
+
+Block Time Linker uses [moment.js](https://momentjs.com/docs/#/displaying/format/) to format the date and time to be appended.
+
+- For example, if `20230101120030` is the desired text to be appended, then `YYYYMMDDHHmmss` needs to be configured in settings.
+- In addition, **square brackets** are needed to surround the content that is not part of the format string.
+- On the other hand, symboles such as `:` **cannot be used** in Obsidian as block IDs. Therefore, one should experiment the proper format for the timestamp.
+
 ## Credits
 
 - [Obsidian: Copy Block Link](https://github.com/mgmeyers/obsidian-copy-block-link)
