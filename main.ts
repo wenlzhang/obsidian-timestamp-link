@@ -7,10 +7,11 @@ import {
   Plugin,
   SectionCache,
   TFile,
+  moment,
 } from "obsidian";
 
 function generateId(): string {
-  return Math.random().toString(36).substr(2, 6);
+  return moment().format('YYYY-MM-DDTHH-mm-ss');
 }
 
 const illegalHeadingCharsRegex = /[!"#$%&()*+,.:;<=>?@^`{|}~\/\[\]\\]/g;
