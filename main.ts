@@ -113,6 +113,22 @@ export default class MyPlugin extends Plugin {
       },
     });
 
+    this.addCommand({
+      id: "copy-note-link",
+      name: "Copy note link",
+      editorCheckCallback: (isChecking, editor, view) => {
+        return this.handleCommandNote(isChecking, editor, view);
+      },
+    });
+
+    this.addCommand({
+      id: "copy-note-link-append-text",
+      name: "Copy note link & append text",
+      editorCheckCallback: (isChecking, editor, view) => {
+        return this.handleCommandNoteAppend(isChecking, editor, view);
+      },
+    });
+
   }
 
   generateId(): string {
@@ -172,6 +188,39 @@ export default class MyPlugin extends Plugin {
         block as SectionCache | ListItemCache,
         isEmbed
       );
+    }
+  }
+
+  handleCommandNote(
+    isChecking: boolean,
+    editor: Editor,
+    view: MarkdownView
+  ) {
+    if (isChecking) {
+      return true; // Always enable the command
+    }
+
+    const file = view.file;
+    if (file) {
+      const link = this.app.fileManager.generateMarkdownLink(file, file.basename);
+      navigator.clipboard.writeText(link);
+    }
+  }
+
+  handleCommandNoteAppend(
+    isChecking: boolean,
+    editor: Editor,
+    view: MarkdownView
+  ) {
+    if (isChecking) {
+      return true; // Always enable the command
+    }
+  
+    const file = view.file;
+    if (file) {
+      const link = this.app.fileManager.generateMarkdownLink(file, file.basename);
+      const appendText = moment().format(this.settings.appendTextDateFormat);
+      navigator.clipboard.writeText(`${link} ${appendText}`);
     }
   }
 
