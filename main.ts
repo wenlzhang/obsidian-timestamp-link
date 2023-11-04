@@ -37,7 +37,7 @@ export default class MyPlugin extends Plugin {
   settings: MyPluginSettings;
 
   async onload() {
-    console.log("loading Block Time Linker");
+    console.log("loading Timestamp Link");
     await this.loadSettings();
 
     this.addSettingTab(new MyPluginSettingTab(this.app, this));
@@ -302,7 +302,7 @@ export default class MyPlugin extends Plugin {
   }
 
   onunload(): void {
-      console.log("unloading Block Time Linker");
+      console.log("unloading Timestamp Link");
   }
 
   async loadSettings() {

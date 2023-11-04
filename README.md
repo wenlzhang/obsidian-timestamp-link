@@ -1,6 +1,6 @@
-# Block Time Linker
+# Timestamp Link
 
-[![GitHub release (Latest by date)](https://img.shields.io/github/v/release/wenlzhang/obsidian-block-time-linker)](https://github.com/wenlzhang/obsidian-block-time-linker/releases) ![GitHub all releases](https://img.shields.io/github/downloads/wenlzhang/obsidian-block-time-linker/total?color=success)
+[![GitHub release (Latest by date)](https://img.shields.io/github/v/release/wenlzhang/obsidian-timestamp-link)](https://github.com/wenlzhang/obsidian-block-timestamp-link/releases) ![GitHub all releases](https://img.shields.io/github/downloads/wenlzhang/obsidian-timestamp-link/total?color=success)
 
 An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, headings and notes.
 
@@ -10,7 +10,7 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
 
 ## Notes
 
-Block Time Linker uses [moment.js](https://momentjs.com/docs/#/displaying/format/) to format the date and time to be appended.
+Timestamp Link uses [moment.js](https://momentjs.com/docs/#/displaying/format/) to format the date and time to be appended.
 
 - For example, if `20230101120030` is the desired text to be appended, then `YYYYMMDDHHmmss` needs to be configured in settings.
 - In addition, **square brackets** are needed to surround the content that is not part of the format string.

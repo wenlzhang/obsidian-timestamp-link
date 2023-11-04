@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-block-time-linker",
-	"name": "Block Time Linker",
+	"id": "obsidian-timestamp-link",
+	"name": "Block Timestamp Link",
 	"version": "0.0.1",
 	"minAppVersion": "1.0.0",
 	"description": "Copy timestamped links to blocks, headings and notes.",
