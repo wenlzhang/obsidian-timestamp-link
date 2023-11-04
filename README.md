@@ -16,6 +16,11 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
     - E.g., `[[Note]]`
     - E.g., `[[Note]] 📝 2023-11-04T12:00`
 
+## Use cases
+
+- Adding timestamps to links provides context/time
+    - For instance, in the slip-box method, one may create entry notes to accumulate notes (links) of similar topics. With timestamp information, can can see when the block links are created and when the links are inserted into the entry notes. These timestamp info can be different.
+
 ## Usage
 
 Timestamp Link uses [moment.js](https://momentjs.com/docs/#/displaying/format/) to format the date and time to be appended.
