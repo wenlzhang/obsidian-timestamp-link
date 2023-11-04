@@ -16,7 +16,7 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
     - E.g., `[[Note]]`
     - E.g., `[[Note]] 📝 2023-11-04T12:00`
 
-## Notes
+## Usage
 
 Timestamp Link uses [moment.js](https://momentjs.com/docs/#/displaying/format/) to format the date and time to be appended.
 
