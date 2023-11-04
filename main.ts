@@ -90,18 +90,26 @@ export default class MyPlugin extends Plugin {
     });
 
     this.addCommand({
-      id: "copy-block-heading-link-appending-text",
-      name: "Copy block/heading link appending text",
+      id: "copy-block-heading-embed",
+      name: "Copy block/heading embed",
+      editorCheckCallback: (isChecking, editor, view) => {
+        return this.handleCommand(isChecking, editor, view, true);
+      },
+    });
+
+    this.addCommand({
+      id: "copy-block-heading-link-append-text",
+      name: "Copy block/heading link & append text",
       editorCheckCallback: (isChecking, editor, view) => {
         return this.handleCommandAppend(isChecking, editor, view, false);
       },
     });
 
     this.addCommand({
-      id: "copy-block-heading-embed",
-      name: "Copy block/heading embed",
+      id: "copy-block-heading-embed-append-text",
+      name: "Copy block/heading embed & append text",
       editorCheckCallback: (isChecking, editor, view) => {
-        return this.handleCommand(isChecking, editor, view, true);
+        return this.handleCommandAppend(isChecking, editor, view, true);
       },
     });
 
