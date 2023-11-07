@@ -18,8 +18,8 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
 
 ## Use cases
 
-- Adding timestamps to links provides context/time
-    - For instance, in the slip-box method, one may create entry notes to accumulate notes (links) of similar topics. With timestamp information, can can see when the block links are created and when the links are inserted into the entry notes. These timestamp info can be different.
+- Adding timestamps to links provides context
+    - For instance, in the slip-box method, one may create entry notes to accumulate notes (links) of similar topics. With timestamp information, can can see when the (block) links are created and inserted into the entry notes.
 
 ## Usage
 
