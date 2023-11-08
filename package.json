@@ -1,5 +1,5 @@
 {
-  "name": "obsidian-timestamp-link",
+  "name": "timestamp-link",
 	"version": "0.0.1",
   "description": "Copy timestamped links to blocks, headings and notes.",
   "main": "main.js",
