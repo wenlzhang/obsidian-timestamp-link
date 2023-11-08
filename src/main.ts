@@ -10,8 +10,8 @@ import {
   moment,
 } from "obsidian";
 
-import { DEFAULT_SETTINGS, MyPluginSettings } from "./settings";
-import { MyPluginSettingTab } from "./settingsTab";
+import { DEFAULT_SETTINGS, TimestampLinkSettings } from "./settings";
+import { TimestampLinkSettingTab } from "./settingsTab";
 
 const illegalHeadingCharsRegex = /[!"#$%&()*+,.:;<=>?@^`{|}~\/\[\]\\]/g;
 function sanitizeHeading(heading: string) {
@@ -33,14 +33,14 @@ function shouldInsertAfter(block: ListItemCache | SectionCache) {
   }
 }
 
-export default class MyPlugin extends Plugin {
-  settings: MyPluginSettings;
+export default class TimestampLink extends Plugin {
+  settings: TimestampLinkSettings;
 
   async onload() {
     console.log("loading Timestamp Link");
     await this.loadSettings();
 
-    this.addSettingTab(new MyPluginSettingTab(this.app, this));
+    this.addSettingTab(new TimestampLinkSettingTab(this.app, this));
 
     // this.registerEvent(
     //   this.app.workspace.on("editor-menu", (menu, editor, view) => {

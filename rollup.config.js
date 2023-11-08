@@ -12,9 +12,9 @@ if you want to view the source visit the plugins github repository
 `;
 
 export default {
-  input: 'main.ts',
+  input: 'src/main.ts', // Point to main.js file
   output: {
-    dir: '.',
+    dir: 'build', // Output build directory
     sourcemap: 'inline',
     sourcemapExcludeSources: isProd,
     format: 'cjs',

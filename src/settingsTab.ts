@@ -4,15 +4,12 @@ import {
   App,
 } from "obsidian";
 
-import {
-  MyPluginSettings,
-} from "./settings";
-import MyPlugin from "./main";
+import TimestampLink from "./main";
 
-export class MyPluginSettingTab extends PluginSettingTab {
-  plugin: MyPlugin;
+export class TimestampLinkSettingTab extends PluginSettingTab {
+  plugin: TimestampLink;
 
-  constructor(app: App, plugin: MyPlugin) {
+  constructor(app: App, plugin: TimestampLink) {
     super(app, plugin);
     this.plugin = plugin;
   }
