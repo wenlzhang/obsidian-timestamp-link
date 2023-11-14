@@ -6,13 +6,13 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
 
 ## Features
 
-- Copy timestamped links to blocks, and append text
+- Copy timestamped links to blocks, and append timestamp
     - E.g., `[[Note#^20230101120030]]`
     - E.g., `[[Note#^20230101120030]] 📝 2023-11-04T12:00`
-- Copy timestamped links to headings, and append text
+- Copy links to headings, and append timestamp
     - E.g., `[[Note#Heading]]`
     - E.g., `[[Note#Heading]] 📝 2023-11-04T12:00`
-- Copy timestamped links to notes, and append text
+- Copy links to notes, and append timestamp
     - E.g., `[[Note]]`
     - E.g., `[[Note]] 📝 2023-11-04T12:00`
 
