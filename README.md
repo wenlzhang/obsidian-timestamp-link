@@ -16,6 +16,13 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
     - E.g., `[[Note]]`
     - E.g., `[[Note]] 📝 2023-11-04T12:00`
 
+## The story behind this plugin
+
+[Obsidian Todoist Context Bridge](https://exp.ptkm.net/obsidian-todoist-context-bridge) was crafted with two essential [PTKM Core Principles](https://exp.ptkm.net/ptkm-core-principles) that shape its functionality:
+
+- **Context Preservation**: Ensuring no valuable information is lost
+- **Linking Everything**: Allowing seamless navigation
+
 ## Use cases
 
 - Adding timestamps to links provides context
@@ -36,4 +43,6 @@ Timestamp Link uses [moment.js](https://momentjs.com/docs/#/displaying/format/) 
 
 ## Support me
 
-<a href='https://ko-fi.com/C0C66C1TB' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+If you find this plugin helpful, consider [sponsoring my work](https://github.com/sponsors/wenlzhang) or
+
+<a href='https://ko-fi.com/C0C66C1TB' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee' /></a>
