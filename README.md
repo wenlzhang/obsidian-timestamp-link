@@ -18,15 +18,14 @@ An [Obsidian](https://obsidian.md/) plugin to copy timestamped links to blocks, 
 
 ## The story behind this plugin
 
-[Obsidian Todoist Context Bridge](https://exp.ptkm.net/obsidian-todoist-context-bridge) was crafted with two essential [PTKM Core Principles](https://exp.ptkm.net/ptkm-core-principles) that shape its functionality:
+[Obsidian Timestamp Link](https://exp.ptkm.net/obsidian-timestamp-link) was crafted with two [PTKM Core Principles](https://exp.ptkm.net/ptkm-core-principles) that shape its functionality:
 
 - **Context Preservation**: Ensuring no valuable information is lost
 - **Linking Everything**: Allowing seamless navigation
 
-## Use cases
+Adding timestamps to links provides valuable context. For example, in the slip-box method, users can create entry notes to gather links related to similar topics.
 
-- Adding timestamps to links provides context
-    - For instance, in the slip-box method, one may create entry notes to accumulate notes (links) of similar topics. With timestamp information, can can see when the (block) links are created and inserted into the entry notes.
+By including timestamp information, you can easily see when each block link was created and when note links were inserted into the entry notes, enhancing your understanding of the timeline and evolution of your ideas.
 
 ## Usage
 
