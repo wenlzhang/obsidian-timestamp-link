@@ -28,7 +28,7 @@ Imagine being able to add timestamps to three different types of links within yo
 2. **Note Links**: For links to existing notes, you can add a timestamp whenever you insert the link. This feature ensures that you can always reference when a particular connection was made, enhancing your understanding of how your knowledge has developed.
 3. **Heading Links**: Similar to note links, heading links can also include timestamps upon insertion. This allows you to maintain a comprehensive timeline of your notes, making it easier to navigate your knowledge base.
 
-[Obsidian Timestamp Link](https://exp.ptkm.net/obsidian-timestamp-link) was crafted with two [PTKM Core Principles](https://exp.ptkm.net/ptkm-core-principles) that shape its functionality:
+[Timestamp Link](https://exp.ptkm.net/obsidian-timestamp-link) was crafted with two [PTKM Core Principles](https://exp.ptkm.net/ptkm-core-principles) that shape its functionality:
 
 - **Providing Context**: Ensuring no valuable information is lost
 - **Linking Everything**: Allowing seamless navigation
