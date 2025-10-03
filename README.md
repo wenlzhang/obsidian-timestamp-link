@@ -63,7 +63,7 @@ Advanced URI links:
 - Generate block IDs automatically when needed
 - Can be copied in plain URL format or Markdown format with display text (configurable in settings)
   - **Plain format**: `obsidian://adv-uri?vault=...&uid=...`
-  - **Markdown format**: `[[Note Name]](obsidian://adv-uri?vault=...&uid=...)` for notes, `[[Note#^blockid]](obsidian://adv-uri?...)` for blocks, `[[Note#Heading]](obsidian://adv-uri?...)` for headings
+  - **Markdown format**: `[Note Name](obsidian://adv-uri?vault=...&uid=...)` for notes, `[Note#^blockid](obsidian://adv-uri?...)` for blocks, `[Note#Heading](obsidian://adv-uri?...)` for headings
 
 ## Documentation
 

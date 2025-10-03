@@ -470,12 +470,8 @@ export default class TimestampLink extends Plugin {
       const heading = (block as HeadingCache).heading;
       const uri = await this.generateAdvancedUriToHeading(heading, view.file, editor);
       if (uri) {
-        const internalLink = this.app.fileManager.generateMarkdownLink(
-          view.file,
-          "",
-          "#" + sanitizeHeading(heading)
-        );
-        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+        const displayText = `${view.file.basename}#${heading}`;
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
         navigator.clipboard.writeText(formattedUri);
       } else {
         new Notice("Failed to generate advanced URI");
@@ -510,12 +506,8 @@ export default class TimestampLink extends Plugin {
       const heading = (block as HeadingCache).heading;
       const uri = await this.generateAdvancedUriToHeading(heading, view.file, editor);
       if (uri) {
-        const internalLink = this.app.fileManager.generateMarkdownLink(
-          view.file,
-          "",
-          "#" + sanitizeHeading(heading)
-        );
-        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+        const displayText = `${view.file.basename}#${heading}`;
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
         const appendText = moment().format(this.settings.appendTextDateFormat);
         navigator.clipboard.writeText(`${formattedUri} ${appendText}`);
       } else {
@@ -596,12 +588,8 @@ export default class TimestampLink extends Plugin {
     if (blockId) {
       const uri = await this.generateAdvancedUriToBlock(blockId, file, editor);
       if (uri) {
-        const internalLink = this.app.fileManager.generateMarkdownLink(
-          file,
-          "",
-          "#^" + blockId
-        );
-        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+        const displayText = `${file.basename}#^${blockId}`;
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
         navigator.clipboard.writeText(formattedUri);
       } else {
         new Notice("Failed to generate advanced URI");
@@ -622,12 +610,8 @@ export default class TimestampLink extends Plugin {
     editor.replaceRange(`${spacer}^${id}`, end);
     const uri = await this.generateAdvancedUriToBlock(id, file, editor);
     if (uri) {
-      const internalLink = this.app.fileManager.generateMarkdownLink(
-        file,
-        "",
-        "#^" + id
-      );
-      const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+      const displayText = `${file.basename}#^${id}`;
+      const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
       navigator.clipboard.writeText(formattedUri);
     } else {
       new Notice("Failed to generate advanced URI");
@@ -645,12 +629,8 @@ export default class TimestampLink extends Plugin {
     if (blockId) {
       const uri = await this.generateAdvancedUriToBlock(blockId, file, editor);
       if (uri) {
-        const internalLink = this.app.fileManager.generateMarkdownLink(
-          file,
-          "",
-          "#^" + blockId
-        );
-        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+        const displayText = `${file.basename}#^${blockId}`;
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
         const appendText = moment().format(this.settings.appendTextDateFormat);
         navigator.clipboard.writeText(`${formattedUri} ${appendText}`);
       } else {
@@ -672,12 +652,8 @@ export default class TimestampLink extends Plugin {
     editor.replaceRange(`${spacer}^${id}`, end);
     const uri = await this.generateAdvancedUriToBlock(id, file, editor);
     if (uri) {
-      const internalLink = this.app.fileManager.generateMarkdownLink(
-        file,
-        "",
-        "#^" + id
-      );
-      const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+      const displayText = `${file.basename}#^${id}`;
+      const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
       const appendText = moment().format(this.settings.appendTextDateFormat);
       navigator.clipboard.writeText(`${formattedUri} ${appendText}`);
     } else {
