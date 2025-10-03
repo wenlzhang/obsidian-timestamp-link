@@ -35,6 +35,32 @@ Imagine being able to add timestamps to three different types of links within yo
 
 By including timestamp information, you can easily see when each block link was created and when note links were inserted into the entry notes, enhancing your understanding of the timeline and evolution of your ideas.
 
+## Features
+
+### Standard Link Commands
+
+- **Copy block/heading link**: Copy an internal Obsidian link to a block or heading
+- **Copy block/heading embed**: Copy an embed link to a block or heading
+- **Copy block/heading link & append text**: Copy a link with an appended timestamp
+- **Copy block/heading embed & append text**: Copy an embed link with an appended timestamp
+- **Copy note link**: Copy an internal link to the current note
+- **Copy note link & append text**: Copy a note link with an appended timestamp
+
+### Advanced URI Commands
+
+Requires the [Advanced URI](https://github.com/Vinzent03/obsidian-advanced-uri) plugin to be installed and enabled.
+
+- **Copy advanced URI to block/heading**: Copy an advanced URI external link to a block or heading
+- **Copy advanced URI to block/heading & append text**: Copy an advanced URI link with an appended timestamp
+- **Copy advanced URI to note**: Copy an advanced URI external link to the current note
+- **Copy advanced URI to note & append text**: Copy an advanced URI note link with an appended timestamp
+
+Advanced URI links:
+- Work as external links that can be used outside of Obsidian
+- Support both UID-based and filepath-based linking (based on Advanced URI plugin settings)
+- Automatically create and manage UIDs in frontmatter when UID mode is enabled
+- Generate block IDs automatically when needed
+
 ## Documentation
 
 📚 **[View Full Documentation](https://ptkm.net/obsidian-timestamp-link)**

@@ -43,5 +43,16 @@ export class TimestampLinkSettingTab extends PluginSettingTab {
         await this.plugin.saveSettings();
       }));
   
+    new Setting(this.containerEl)
+      .setName('UID field name')
+      .setDesc('Frontmatter field name to use for unique identifier (for advanced URI links)')
+      .addText(text => text
+        .setPlaceholder('uuid')
+        .setValue(this.plugin.settings.uidField)
+        .onChange(async (value) => {
+          this.plugin.settings.uidField = value;
+          await this.plugin.saveSettings();
+        }));
+  
   }
 }

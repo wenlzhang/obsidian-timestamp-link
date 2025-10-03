@@ -4,6 +4,7 @@ import {
   HeadingCache,
   ListItemCache,
   MarkdownView,
+  Notice,
   Plugin,
   SectionCache,
   TFile,
@@ -129,10 +130,108 @@ export default class TimestampLink extends Plugin {
       },
     });
 
+    this.addCommand({
+      id: "copy-advanced-uri-block-heading",
+      name: "Copy advanced URI to block/heading",
+      editorCheckCallback: (isChecking, editor, view) => {
+        if (isChecking) {
+          return !!this.getBlock(editor, view.file);
+        }
+        this.handleCommandAdvancedUri(isChecking, editor, view);
+        return true;
+      },
+    });
+
+    this.addCommand({
+      id: "copy-advanced-uri-block-heading-append-text",
+      name: "Copy advanced URI to block/heading & append text",
+      editorCheckCallback: (isChecking, editor, view) => {
+        if (isChecking) {
+          return !!this.getBlock(editor, view.file);
+        }
+        this.handleCommandAdvancedUriAppend(isChecking, editor, view);
+        return true;
+      },
+    });
+
+    this.addCommand({
+      id: "copy-advanced-uri-note",
+      name: "Copy advanced URI to note",
+      editorCheckCallback: (isChecking, editor, view) => {
+        if (isChecking) {
+          return true;
+        }
+        this.handleCommandNoteAdvancedUri(isChecking, editor, view);
+        return true;
+      },
+    });
+
+    this.addCommand({
+      id: "copy-advanced-uri-note-append-text",
+      name: "Copy advanced URI to note & append text",
+      editorCheckCallback: (isChecking, editor, view) => {
+        if (isChecking) {
+          return true;
+        }
+        this.handleCommandNoteAdvancedUriAppend(isChecking, editor, view);
+        return true;
+      },
+    });
+
   }
 
   generateId(): string {
     return moment().format(this.settings.blockIDDateFormat);
+  }
+
+  generateUUID(): string {
+    // Using the exact same UUID generation method as Advanced URI plugin
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
+  }
+
+  async ensureUidInFrontmatter(file: TFile, editor: Editor): Promise<string | null> {
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) return null;
+
+    // Store current cursor position
+    const currentCursor = editor.getCursor();
+
+    const fileCache = this.app.metadataCache.getFileCache(file);
+    const frontmatter = fileCache?.frontmatter;
+
+    // Check for UUID field and ensure it has a value
+    const existingUid = frontmatter?.[this.settings.uidField];
+    if (existingUid && existingUid.trim() !== "") {
+      return existingUid;
+    }
+
+    // Generate new UID
+    const newUid = this.generateUUID();
+
+    try {
+      // Add or update frontmatter using the processFrontMatter method
+      // @ts-ignore
+      await this.app.fileManager.processFrontMatter(file, (frontmatter: any) => {
+        frontmatter = frontmatter || {};
+        frontmatter[this.settings.uidField] = newUid;
+      });
+
+      // Restore cursor position
+      editor.setCursor(currentCursor);
+
+      return newUid;
+    } catch (error) {
+      console.error("Error updating frontmatter:", error);
+      return null;
+    }
   }
 
   handleCommand(
@@ -221,6 +320,321 @@ export default class TimestampLink extends Plugin {
       const link = this.app.fileManager.generateMarkdownLink(file, file.basename);
       const appendText = moment().format(this.settings.appendTextDateFormat);
       navigator.clipboard.writeText(`${link} ${appendText}`);
+    }
+  }
+
+  async generateAdvancedUriToBlock(blockId: string, file: TFile, editor: Editor): Promise<string> {
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) return "";
+
+    // @ts-ignore
+    const useUid = advancedUriPlugin.settings?.useUID || false;
+
+    const vaultName = this.app.vault.getName();
+
+    if (useUid) {
+      // Ensure UID exists in frontmatter
+      const uid = await this.ensureUidInFrontmatter(file, editor);
+      if (!uid) {
+        return "";
+      }
+
+      // Build the URI with proper encoding
+      const params = new URLSearchParams();
+      params.set("vault", vaultName);
+      params.set("uid", uid);
+      params.set("block", blockId);
+
+      // Convert + to %20 in the final URL
+      const queryString = params.toString().replace(/\+/g, "%20");
+      return `obsidian://adv-uri?${queryString}`;
+    } else {
+      // If not using UID, use file path
+      const params = new URLSearchParams();
+      params.set("vault", vaultName);
+      params.set("filepath", file.path);
+      params.set("block", blockId);
+
+      // Convert + to %20 in the final URL
+      const queryString = params.toString().replace(/\+/g, "%20");
+      return `obsidian://adv-uri?${queryString}`;
+    }
+  }
+
+  async generateAdvancedUriToHeading(heading: string, file: TFile, editor: Editor): Promise<string> {
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) return "";
+
+    // @ts-ignore
+    const useUid = advancedUriPlugin.settings?.useUID || false;
+
+    const vaultName = this.app.vault.getName();
+
+    if (useUid) {
+      // Ensure UID exists in frontmatter
+      const uid = await this.ensureUidInFrontmatter(file, editor);
+      if (!uid) {
+        return "";
+      }
+
+      // Build the URI with proper encoding
+      const params = new URLSearchParams();
+      params.set("vault", vaultName);
+      params.set("uid", uid);
+      params.set("heading", heading);
+
+      // Convert + to %20 in the final URL
+      const queryString = params.toString().replace(/\+/g, "%20");
+      return `obsidian://adv-uri?${queryString}`;
+    } else {
+      // If not using UID, use file path
+      const params = new URLSearchParams();
+      params.set("vault", vaultName);
+      params.set("filepath", file.path);
+      params.set("heading", heading);
+
+      // Convert + to %20 in the final URL
+      const queryString = params.toString().replace(/\+/g, "%20");
+      return `obsidian://adv-uri?${queryString}`;
+    }
+  }
+
+  async generateAdvancedUriToFile(file: TFile, editor: Editor): Promise<string> {
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) return "";
+
+    // @ts-ignore
+    const useUid = advancedUriPlugin.settings?.useUID || false;
+
+    const vaultName = this.app.vault.getName();
+
+    if (useUid) {
+      // Get or create UID in frontmatter
+      const uid = await this.ensureUidInFrontmatter(file, editor);
+      if (!uid) {
+        return "";
+      }
+
+      // Build the URI with proper encoding
+      const params = new URLSearchParams();
+      params.set("vault", vaultName);
+      params.set("uid", uid);
+
+      // Convert + to %20 in the final URL
+      const queryString = params.toString().replace(/\+/g, "%20");
+      return `obsidian://adv-uri?${queryString}`;
+    } else {
+      // If not using UID, use file path
+      const params = new URLSearchParams();
+      params.set("vault", vaultName);
+      params.set("filepath", file.path);
+
+      // Convert + to %20 in the final URL
+      const queryString = params.toString().replace(/\+/g, "%20");
+      return `obsidian://adv-uri?${queryString}`;
+    }
+  }
+
+  async handleCommandAdvancedUri(
+    isChecking: boolean,
+    editor: Editor,
+    view: MarkdownView
+  ) {
+    if (isChecking) {
+      return !!this.getBlock(editor, view.file);
+    }
+
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) {
+      new Notice("Advanced URI plugin is not installed or enabled");
+      return;
+    }
+
+    const block = this.getBlock(editor, view.file);
+    if (!block || !view.file) return;
+
+    const isHeading = !!(block as any).heading;
+
+    if (isHeading) {
+      const heading = (block as HeadingCache).heading;
+      const uri = await this.generateAdvancedUriToHeading(heading, view.file, editor);
+      if (uri) {
+        navigator.clipboard.writeText(uri);
+      } else {
+        new Notice("Failed to generate advanced URI");
+      }
+    } else {
+      await this.handleBlockAdvancedUri(view.file, editor, block as SectionCache | ListItemCache);
+    }
+  }
+
+  async handleCommandAdvancedUriAppend(
+    isChecking: boolean,
+    editor: Editor,
+    view: MarkdownView
+  ) {
+    if (isChecking) {
+      return !!this.getBlock(editor, view.file);
+    }
+
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) {
+      new Notice("Advanced URI plugin is not installed or enabled");
+      return;
+    }
+
+    const block = this.getBlock(editor, view.file);
+    if (!block || !view.file) return;
+
+    const isHeading = !!(block as any).heading;
+
+    if (isHeading) {
+      const heading = (block as HeadingCache).heading;
+      const uri = await this.generateAdvancedUriToHeading(heading, view.file, editor);
+      if (uri) {
+        const appendText = moment().format(this.settings.appendTextDateFormat);
+        navigator.clipboard.writeText(`${uri} ${appendText}`);
+      } else {
+        new Notice("Failed to generate advanced URI");
+      }
+    } else {
+      await this.handleBlockAdvancedUriAppend(view.file, editor, block as SectionCache | ListItemCache);
+    }
+  }
+
+  async handleCommandNoteAdvancedUri(
+    isChecking: boolean,
+    editor: Editor,
+    view: MarkdownView
+  ) {
+    if (isChecking) {
+      return true; // Always enable the command
+    }
+
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) {
+      new Notice("Advanced URI plugin is not installed or enabled");
+      return;
+    }
+
+    const file = view.file;
+    if (file) {
+      const uri = await this.generateAdvancedUriToFile(file, editor);
+      if (uri) {
+        navigator.clipboard.writeText(uri);
+      } else {
+        new Notice("Failed to generate advanced URI");
+      }
+    }
+  }
+
+  async handleCommandNoteAdvancedUriAppend(
+    isChecking: boolean,
+    editor: Editor,
+    view: MarkdownView
+  ) {
+    if (isChecking) {
+      return true; // Always enable the command
+    }
+
+    // @ts-ignore
+    const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
+    if (!advancedUriPlugin) {
+      new Notice("Advanced URI plugin is not installed or enabled");
+      return;
+    }
+
+    const file = view.file;
+    if (file) {
+      const uri = await this.generateAdvancedUriToFile(file, editor);
+      if (uri) {
+        const appendText = moment().format(this.settings.appendTextDateFormat);
+        navigator.clipboard.writeText(`${uri} ${appendText}`);
+      } else {
+        new Notice("Failed to generate advanced URI");
+      }
+    }
+  }
+
+  async handleBlockAdvancedUri(
+    file: TFile,
+    editor: Editor,
+    block: ListItemCache | SectionCache
+  ) {
+    const blockId = block.id;
+
+    // Copy existing block id
+    if (blockId) {
+      const uri = await this.generateAdvancedUriToBlock(blockId, file, editor);
+      if (uri) {
+        navigator.clipboard.writeText(uri);
+      } else {
+        new Notice("Failed to generate advanced URI");
+      }
+      return;
+    }
+
+    // Add a block id
+    const sectionEnd = block.position.end;
+    const end: EditorPosition = {
+      ch: sectionEnd.col,
+      line: sectionEnd.line,
+    };
+
+    const id = this.generateId();
+    const spacer = shouldInsertAfter(block) ? "\n\n" : " ";
+
+    editor.replaceRange(`${spacer}^${id}`, end);
+    const uri = await this.generateAdvancedUriToBlock(id, file, editor);
+    if (uri) {
+      navigator.clipboard.writeText(uri);
+    } else {
+      new Notice("Failed to generate advanced URI");
+    }
+  }
+
+  async handleBlockAdvancedUriAppend(
+    file: TFile,
+    editor: Editor,
+    block: ListItemCache | SectionCache
+  ) {
+    const blockId = block.id;
+
+    // Copy existing block id
+    if (blockId) {
+      const uri = await this.generateAdvancedUriToBlock(blockId, file, editor);
+      if (uri) {
+        const appendText = moment().format(this.settings.appendTextDateFormat);
+        navigator.clipboard.writeText(`${uri} ${appendText}`);
+      } else {
+        new Notice("Failed to generate advanced URI");
+      }
+      return;
+    }
+
+    // Add a block id
+    const sectionEnd = block.position.end;
+    const end: EditorPosition = {
+      ch: sectionEnd.col,
+      line: sectionEnd.line,
+    };
+
+    const id = this.generateId();
+    const spacer = shouldInsertAfter(block) ? "\n\n" : " ";
+
+    editor.replaceRange(`${spacer}^${id}`, end);
+    const uri = await this.generateAdvancedUriToBlock(id, file, editor);
+    if (uri) {
+      const appendText = moment().format(this.settings.appendTextDateFormat);
+      navigator.clipboard.writeText(`${uri} ${appendText}`);
+    } else {
+      new Notice("Failed to generate advanced URI");
     }
   }
 
