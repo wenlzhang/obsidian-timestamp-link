@@ -5,8 +5,12 @@
   "main": "main.js",
   "scripts": {
     "dev": "rollup --config rollup.config.js -w",
-    "build": "rollup --config rollup.config.js --environment BUILD:production"
+    "build": "rollup --config rollup.config.js --environment BUILD:production && cp manifest.json build/",
+    "preversion": "npm run build",
+    "version": "node version-bump.mjs && node version-changelog.mjs && git add manifest.json versions.json CHANGELOG.md && cp manifest.json build/",
+    "postversion": "git push && git push --tags && gh release create $npm_package_version -F CHANGELOG.md --draft build/main.js build/manifest.json"
   },
+  "version-tag-prefix": "",
   "keywords": [],
   "author": "",
   "license": "MIT",
