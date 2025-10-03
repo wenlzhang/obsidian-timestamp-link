@@ -1,6 +1,6 @@
 {
   "name": "timestamp-link",
-	"version": "0.0.2",
+  "version": "0.1.0",
   "description": "Copy timestamped links to blocks, headings and notes.",
   "main": "main.js",
   "scripts": {
