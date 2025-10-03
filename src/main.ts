@@ -401,6 +401,13 @@ export default class TimestampLink extends Plugin {
     }
   }
 
+  formatAdvancedUriAsMarkdown(uri: string, displayText: string): string {
+    if (this.settings.advancedUriFormat === 'markdown') {
+      return `[${displayText}](${uri})`;
+    }
+    return uri;
+  }
+
   async generateAdvancedUriToFile(file: TFile, editor: Editor): Promise<string> {
     // @ts-ignore
     const advancedUriPlugin = this.app.plugins?.getPlugin("obsidian-advanced-uri");
@@ -463,7 +470,13 @@ export default class TimestampLink extends Plugin {
       const heading = (block as HeadingCache).heading;
       const uri = await this.generateAdvancedUriToHeading(heading, view.file, editor);
       if (uri) {
-        navigator.clipboard.writeText(uri);
+        const internalLink = this.app.fileManager.generateMarkdownLink(
+          view.file,
+          "",
+          "#" + sanitizeHeading(heading)
+        );
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+        navigator.clipboard.writeText(formattedUri);
       } else {
         new Notice("Failed to generate advanced URI");
       }
@@ -497,8 +510,14 @@ export default class TimestampLink extends Plugin {
       const heading = (block as HeadingCache).heading;
       const uri = await this.generateAdvancedUriToHeading(heading, view.file, editor);
       if (uri) {
+        const internalLink = this.app.fileManager.generateMarkdownLink(
+          view.file,
+          "",
+          "#" + sanitizeHeading(heading)
+        );
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
         const appendText = moment().format(this.settings.appendTextDateFormat);
-        navigator.clipboard.writeText(`${uri} ${appendText}`);
+        navigator.clipboard.writeText(`${formattedUri} ${appendText}`);
       } else {
         new Notice("Failed to generate advanced URI");
       }
@@ -527,7 +546,9 @@ export default class TimestampLink extends Plugin {
     if (file) {
       const uri = await this.generateAdvancedUriToFile(file, editor);
       if (uri) {
-        navigator.clipboard.writeText(uri);
+        const displayText = file.basename;
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
+        navigator.clipboard.writeText(formattedUri);
       } else {
         new Notice("Failed to generate advanced URI");
       }
@@ -554,8 +575,10 @@ export default class TimestampLink extends Plugin {
     if (file) {
       const uri = await this.generateAdvancedUriToFile(file, editor);
       if (uri) {
+        const displayText = file.basename;
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, displayText);
         const appendText = moment().format(this.settings.appendTextDateFormat);
-        navigator.clipboard.writeText(`${uri} ${appendText}`);
+        navigator.clipboard.writeText(`${formattedUri} ${appendText}`);
       } else {
         new Notice("Failed to generate advanced URI");
       }
@@ -573,7 +596,13 @@ export default class TimestampLink extends Plugin {
     if (blockId) {
       const uri = await this.generateAdvancedUriToBlock(blockId, file, editor);
       if (uri) {
-        navigator.clipboard.writeText(uri);
+        const internalLink = this.app.fileManager.generateMarkdownLink(
+          file,
+          "",
+          "#^" + blockId
+        );
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+        navigator.clipboard.writeText(formattedUri);
       } else {
         new Notice("Failed to generate advanced URI");
       }
@@ -593,7 +622,13 @@ export default class TimestampLink extends Plugin {
     editor.replaceRange(`${spacer}^${id}`, end);
     const uri = await this.generateAdvancedUriToBlock(id, file, editor);
     if (uri) {
-      navigator.clipboard.writeText(uri);
+      const internalLink = this.app.fileManager.generateMarkdownLink(
+        file,
+        "",
+        "#^" + id
+      );
+      const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
+      navigator.clipboard.writeText(formattedUri);
     } else {
       new Notice("Failed to generate advanced URI");
     }
@@ -610,8 +645,14 @@ export default class TimestampLink extends Plugin {
     if (blockId) {
       const uri = await this.generateAdvancedUriToBlock(blockId, file, editor);
       if (uri) {
+        const internalLink = this.app.fileManager.generateMarkdownLink(
+          file,
+          "",
+          "#^" + blockId
+        );
+        const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
         const appendText = moment().format(this.settings.appendTextDateFormat);
-        navigator.clipboard.writeText(`${uri} ${appendText}`);
+        navigator.clipboard.writeText(`${formattedUri} ${appendText}`);
       } else {
         new Notice("Failed to generate advanced URI");
       }
@@ -631,8 +672,14 @@ export default class TimestampLink extends Plugin {
     editor.replaceRange(`${spacer}^${id}`, end);
     const uri = await this.generateAdvancedUriToBlock(id, file, editor);
     if (uri) {
+      const internalLink = this.app.fileManager.generateMarkdownLink(
+        file,
+        "",
+        "#^" + id
+      );
+      const formattedUri = this.formatAdvancedUriAsMarkdown(uri, internalLink);
       const appendText = moment().format(this.settings.appendTextDateFormat);
-      navigator.clipboard.writeText(`${uri} ${appendText}`);
+      navigator.clipboard.writeText(`${formattedUri} ${appendText}`);
     } else {
       new Notice("Failed to generate advanced URI");
     }

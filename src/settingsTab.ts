@@ -54,5 +54,17 @@ export class TimestampLinkSettingTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         }));
   
+    new Setting(this.containerEl)
+      .setName('Advanced URI link format')
+      .setDesc('Choose how advanced URI links are copied: plain URL or Markdown format with display text')
+      .addDropdown(dropdown => dropdown
+        .addOption('plain', 'Plain URL')
+        .addOption('markdown', 'Markdown format')
+        .setValue(this.plugin.settings.advancedUriFormat)
+        .onChange(async (value: 'plain' | 'markdown') => {
+          this.plugin.settings.advancedUriFormat = value;
+          await this.plugin.saveSettings();
+        }));
+  
   }
 }

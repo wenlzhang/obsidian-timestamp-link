@@ -56,10 +56,14 @@ Requires the [Advanced URI](https://github.com/Vinzent03/obsidian-advanced-uri) 
 - **Copy advanced URI to note & append text**: Copy an advanced URI note link with an appended timestamp
 
 Advanced URI links:
+
 - Work as external links that can be used outside of Obsidian
 - Support both UID-based and filepath-based linking (based on Advanced URI plugin settings)
 - Automatically create and manage UIDs in frontmatter when UID mode is enabled
 - Generate block IDs automatically when needed
+- Can be copied in plain URL format or Markdown format with display text (configurable in settings)
+  - **Plain format**: `obsidian://adv-uri?vault=...&uid=...`
+  - **Markdown format**: `[[Note Name]](obsidian://adv-uri?vault=...&uid=...)` for notes, `[[Note#^blockid]](obsidian://adv-uri?...)` for blocks, `[[Note#Heading]](obsidian://adv-uri?...)` for headings
 
 ## Documentation
 
