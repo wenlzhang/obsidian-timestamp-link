@@ -661,11 +661,11 @@ export default class TimestampLink extends Plugin {
     }
   }
 
-  getBlock(editor: Editor, file: TFile) {
+  getBlock(editor: Editor, file: TFile): ListItemCache | HeadingCache | SectionCache | undefined {
     const cursor = editor.getCursor("to");
     const fileCache = this.app.metadataCache.getFileCache(file);
 
-    let block: ListItemCache | HeadingCache | SectionCache = (
+    let block: ListItemCache | HeadingCache | SectionCache | undefined = (
       fileCache?.sections || []
     ).find((section) => {
       return (
@@ -674,17 +674,21 @@ export default class TimestampLink extends Plugin {
       );
     });
 
-    if (block?.type === "list") {
-      block = (fileCache?.listItems || []).find((item) => {
+    if (!block) return undefined;
+
+    if (block.type === "list") {
+      const listItem = (fileCache?.listItems || []).find((item) => {
         return (
           item.position.start.line <= cursor.line &&
           item.position.end.line >= cursor.line
         );
       });
-    } else if (block?.type === "heading") {
-      block = fileCache.headings.find((heading) => {
-        return heading.position.start.line === block.position.start.line;
+      return listItem;
+    } else if (block.type === "heading") {
+      const heading = fileCache?.headings?.find((heading) => {
+        return heading.position.start.line === block!.position.start.line;
       });
+      return heading;
     }
 
     return block;
