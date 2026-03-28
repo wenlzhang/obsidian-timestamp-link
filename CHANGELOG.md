@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 
+
+## [0.1.1] - 2026-03-28
+
+### Changes
+
+- chore: remove stale yarn.lock and add .claude/settings.local.json to gitignore
+- fix: upgrade rollup to v4 to resolve security vulnerabilities (CVE-2024-47068, CVE-2026-27606) and correct license to GPL-3.0
+
 ## [0.1.0] - 2025-10-03
 
 ### Changes
